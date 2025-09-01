@@ -6,7 +6,16 @@
     <description>Recent content on zhiren</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 11 Jul 2025 14:18:50 +0800</lastBuildDate><atom:link href="https://zhirenliew.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 28 Aug 2025 23:24:15 +0800</lastBuildDate><atom:link href="https://zhirenliew.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Robot arm project</title>
+      <link>https://zhirenliew.github.io/posts/robot_arm/</link>
+      <pubDate>Thu, 28 Aug 2025 23:24:15 +0800</pubDate>
+      
+      <guid>https://zhirenliew.github.io/posts/robot_arm/</guid>
+      <description>technical writeup of my robot arm project</description>
+    </item>
+    
     <item>
       <title>Retiring from ctfs</title>
       <link>https://zhirenliew.github.io/posts/ctf_retirement/</link>

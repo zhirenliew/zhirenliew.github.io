@@ -1,0 +1,994 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Robot arm project | zhiren</title>
+<meta name="keywords" content="">
+<meta name="description" content="technical writeup of my robot arm project">
+<meta name="author" content="">
+<link rel="canonical" href="https://zhirenliew.github.io/posts/robot_arm/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.bff9ea534f65d95fa54e4acbb4245968e8f466efcde15f973a90ca891dd8766e.css" integrity="sha256-v/nqU09l2V&#43;lTkrLtCRZaOj0Zu/N4V&#43;XOpDKiR3Ydm4=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="https://zhirenliew.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://zhirenliew.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://zhirenliew.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://zhirenliew.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://zhirenliew.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XHJYTREZSC"></script>
+<script>
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag('js', new Date());
+	gtag('config', 'G-XHJYTREZSC', { 'anonymize_ip': false });
+}
+</script>
+<meta property="og:title" content="Robot arm project" />
+<meta property="og:description" content="technical writeup of my robot arm project" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://zhirenliew.github.io/posts/robot_arm/" />
+<meta property="og:image" content="https://zhirenliew.github.io/robot_arm/cover.JPG" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2025-08-28T23:24:15+08:00" />
+<meta property="article:modified_time" content="2025-08-28T23:24:15+08:00" />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="https://zhirenliew.github.io/robot_arm/cover.JPG" />
+<meta name="twitter:title" content="Robot arm project"/>
+<meta name="twitter:description" content="technical writeup of my robot arm project"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Posts",
+      "item": "https://zhirenliew.github.io/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  3 ,
+      "name": "Robot arm project",
+      "item": "https://zhirenliew.github.io/posts/robot_arm/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Robot arm project",
+  "name": "Robot arm project",
+  "description": "technical writeup of my robot arm project",
+  "keywords": [
+    
+  ],
+  "articleBody": "Overview There should have been a video here but your browser does not seem to support it. I built a robot arm with a camera attached to the end of it.\nThe arm is built with the aim of picking up and sorting colored blocks into corresponding boxes, but the project is currently unfinished, as I want to work on other projects. The mechanical, electrical and low level software part is mostly finished, leaving only the object recognition and block position estimation part left.\ncolored blocks\nMechanical The brackets, grippers, structural parts are all from a kit I bought from shopee. I also got 6 MG996R servos, and assembled the arm using this guide. (The guide is for another robot arm kit, but its quite similar to this one.)\nwhere I drilled\nI also drilled some holes in the arm base so that I could secure the base servo better, as it was quite wobbly and unstable when the arm moved. Also secured some connections with more screws and nuts.\nThere’s six servos, 1 servo is for rotation of base, 3 servos are for 3 planar arm joints, 1 servo is for rotating the gripper, and one is for controlling the gripper. Technically its capable of 5 DOF, but I didn’t utilise the servo for rotating the gripper, its only 4 DOF.\nThe servo horn of the base servo wobbles quite a bit, since the rest of the arm’s weight is being supported by it. Not too sure how to strengthen it tho.\nTo hold the arm still on my table so that it wouldn’t jump around when its moving, I screwed its base to a piece of wood, and g clamped it to the table.\nTo attach the camera at the end of the arm, I designed a camera holder in Fusion and used a 3d printing service to print it out in PLA+.\nLearned that I should always leave space in my design to actually fasten the screws, and leave more space for nuts, since it was difficult to install the arm-holder screws, and fasten the holder-camera nuts.\nElectrical For controls, I used an ESP32, a PCA9685 servo driver, and a raspberry pi zero 2w.\nThe inverse kinematics code is in the ESP32, the servo driver is used to offload sending pwm signals, and the raspberry pi is used for the camera (and object recognition and approaching objects).\nMight not have needed the ESP, but I think its nice to delegate off the inverse kinematics from the pi. Plus I wanted to learn to use ESP-IDF.\nThey’re all connected on a perfboard (my first ever perfboard!).\nTo connect the servo driver to the perfboard, I had to desolder the pins and resolder into the board. The ESP32 and pi is just plugged into soldered female pin headers on the perfboard.\nThe ESP32’s RX,TX lines are connected with the raspberry pi for UART, and the ESP32’s SCL,SDA lines are connected with the servo driver for I2C.\nfisheye camera\nI used a fisheye raspberry pi camera, so that it could have a wider view and detect more blocks. The camera is connected to the pi through a CSI ribbon cable.\nThe raspberry pi zero 2w’s CSI port accepted 22pins 0.5mm pitch, but the camera accepted 15pins 1mm pitch CSI ribbon cables, so to connect them you need 15pins to 22pins CSI ribbon cables. But here I faced a problem, there were just no 15pins to 22pins ribbon cables that were long enough for me (needed ~70cm). The only ones long enough were the 15pins to 15pins 1mm pitch ribbon cables.\nribbon cable extenders\nI solved the problem by finding these nice little ribbon cable extenders. So now I could connect 22pins to 15pins cables from the pi to these extenders, and use a 15pins to 15pins cable to join the extender and the camera.\nBut there was another problem. The 15-22pin ribbon cables had exposed pins on the same side, but the 15-15pin ribbon cables had exposed pins on opposite sides. This meant that if I used this 15-15pin ribbon cable to connect to the extender and camera, I would have to twist the cable to connect to the camera, resulting in the pins being flipped. So pin #1 on the extender, would be connected to pin #15 on the camera.\nself-made exposed pins\nI solved the problem by exposing pins of the ribbon cable myself by following this youtube video, and scratching away the insulation using a utility/paper knife. The camera then worked.\nPower the electronics setup\nAs for the power supply, I used a 12V 200W PSU thats plugged into a wall socket, and connected it to a bunch of parallel XL4015 step down buck converters.\nEach MG996R servos needed 6V and had a stall current of 2.5A, and the max output current for one XL4015 was 5A. So I connected 1 buck converter to 2 servos, and used 3 buck converters in total for 6 servos. Even if 2 servos connected to one buck converter stalled at the same time, it would still pull within the max output current of the buck converter. (probably not good to have no margin space/wiggle room,but oh well)\nAfterwards, I actually found a step down buck converter which could handle outputting at 20A, which might be a better option. But the buck converter apartment I have looks pretty cool, plus idt there’s a part name/datasheet attached, so I’ll just stick with my current setup for now.\nIn the case that all the servos stalled (which probably won’t happen), the servos would pull a total of 90W, which is way below the PSU limit, even after accounting for power loss in the buck converter.\nWhy not use a 6V PSU, and straight connect to servos instead? I remember that I didn’t really find any 6V PSU that could handle the power output I needed, but the convincing point for me was that I wanted the good line and load regulation by buck converters.\nTo power the pi and ESP32, I just connected 5V from another buck converter (so in total there’s 4 buck converters) to them:\n5V -\u003e VIN, GND -\u003e common ground The ESP32 devboard then converts the 5V to 3.3V, since the ESP32 board actually operates in 3.3v. Then to power the PCA9685 servo driver:\nESP32 3.3V -\u003e PCA9685 VCC, PCA9685 GND -\u003e common ground The VCC of the servo driver has to match the logic level of the esp32, as the VCC is used for the 10K pull ups of the I2C. (ref)\nThe output voltage of the pi is also 3.3V, so its perfect for UART with ESP32. (since ESP32 can also only handle max 3.3V pin inputs.)\nThe total current load by the ESP32, Raspberry Pi, and also the PCA9685 servo driver is definetely under 5A, so the buck converter can totally handle it.\nWiring All the wires connected are of the appropriate AWG (I think).\nI stripped away the dupont female headers of the servo wires, and just soldered them to longer wires, that’s soldered to the perfboard / connected to buck converter or common ground.\ncable management\nFor cable management, I inserted all the wires into a long spiral cable wrap that’s ziptied along the arm (so that it follows the arm no matter how the arm moves and won’t dangle and fly around). The camera ribbon cable is just duct taped to the servos.\nAll the other wire connections are made through either terminal blocks or soldered onto the perfboard.\nSoftware System overview The pi runs two python scripts\na web server that gives a GUI for controlling the robot arm a script that opens the camera (and was supposed to run object recognition). When another computer connects to the web server and clicks a coordinate on the GUI, the raspberry pi talks to the ESP (through UART) to move to that coordinate. The ESP does some inverse kinematics, and calculates the joint angles. It then tells the servo driver (through I2C) what angles to turn to, and the driver will controls the servos through pwm signals. The arm then moves to the coordinate.\nIts the same for turning the arm’s base and controlling the gripper, just without the IK.\nThe code for the project can be found here.\nThe ESP32’s software is written using ESP-IDF.\nThe chatbot on the esp-idf docs is really useful for finding how to do things and getting info.\nTalking through UART To setup UART2 on the ESP32:\nESP_ERROR_CHECK(uart_driver_install(UART_NUM_2,0x2000,0x2000,0,0,0)); uart_config_t uart_config = { .baud_rate = 115200, .data_bits = UART_DATA_8_BITS, .parity = UART_PARITY_DISABLE, .stop_bits = UART_STOP_BITS_1, .flow_ctrl = UART_HW_FLOWCTRL_DISABLE, // only tx,rx, no cts,rts .source_clk = UART_SCLK_DEFAULT, }; ESP_ERROR_CHECK(uart_param_config(UART_NUM_2,\u0026uart_config)); ESP_ERROR_CHECK(uart_set_pin(UART_NUM_2,TX_PIN,RX_PIN,UART_PIN_NO_CHANGE,UART_PIN_NO_CHANGE)); And for reading and writing, I made some functions:\nvoid uart_print(char* str){ uart_write_bytes(UART_NUM_2,str,strlen(str)); } char uart_getc(){ // block main thread until read a byte size_t uart_buf_len = 0; while (uart_buf_len == 0) ESP_ERROR_CHECK(uart_get_buffered_data_len(UART_NUM_2,\u0026uart_buf_len)); // there is data to be read char c; uart_read_bytes(UART_NUM_2,\u0026c,1,0); return c; } void uart_fgets(char *buf, int len) { // len includes the null byte int i; for (i = 0; i \u003c (len-1); i++){ char c = uart_getc(); buf[i] = c; if (c == '\\n') { i++; break; } } buf[i] = '\\x00'; return; } ... uart_print(\"...\"); uart_fgets(...,30); On the pi, I just used pyserial:\nser = serial.Serial(\"/dev/serial0\",115200,timeout=1) ... ser.read_until(b\"...\") ser.write(b\"...\") Talking to Servo Driver through I2C To setup I2C on the ESP32:\n// initialise esp32 as i2c master i2c_master_bus_config_t i2c_mst_config = { .scl_io_num = I2C_MASTER_SCL_IO, .sda_io_num = I2C_MASTER_SDA_IO, .i2c_port = I2C_NUM_0, .clk_source = I2C_CLK_SRC_DEFAULT, .glitch_ignore_cnt = 7, .flags.enable_internal_pullup = true, }; ESP_ERROR_CHECK(i2c_new_master_bus(\u0026i2c_mst_config,\u0026bus_handle)); // initialise pca9685 device i2c_device_config_t dev_cfg = { .device_address = 0x40, .dev_addr_length = I2C_ADDR_BIT_LEN_7, .scl_speed_hz = I2C_MASTER_FREQ_HZ, }; ESP_ERROR_CHECK(i2c_master_bus_add_device(bus_handle,\u0026dev_cfg,\u0026dev_handle)); ESP_LOGI(TAG,\"I2C initialised succesfully\"); Reading from the PCA9685 datasheet, as well as referencing Adafruit’s Arduino PCA9685 library source code, this is how I wrote the driver’s PRE_SCALE value and turned on auto increment for consecutive register writing:\n// PRE_SCALE determines pwm output freq / frame size // round(25MHz/(4096*50Hz)) - 1 = 121 #define PRESCALE_VAL 121 ... // write PRESCALE (can only be written in sleep mode) uint8_t init_mode1 = read_reg(REG_MODE1) \u0026 ~MODE1_SLEEP; write_reg(REG_MODE1,init_mode1 | MODE1_SLEEP); write_reg(REG_PRESCALE,PRESCALE_VAL); write_reg(REG_MODE1,init_mode1); // turn on auto increment // have to wait 500 microseconds after awake from sleep before restarting delay(1); write_reg(REG_MODE1,init_mode1 | MODE1_AI | MODE1_RESTART); ESP_LOGI(TAG,\"PRESCALE and AUTO_INCREMENT initialised\"); To set the angle of a servo:\nvoid set_angle(uint8_t id, double angle){ if (angle \u003e 178 || angle \u003c 0){ ESP_LOGE(TAG,\"set_angle(), tried to set servo %d to angle %f\",id,angle); } // map angle to pwm width double pwm_width = MIN_WIDTH + angle * ((MAX_WIDTH - MIN_WIDTH)/(double)SERVO_RANGE); pwm_width = round(pwm_width); uint16_t on = DELAY_PWM; uint16_t off = DELAY_PWM + (uint16_t)pwm_width; uint8_t buf[] = {REG_LED5 + 4*id, on \u0026 0xff, on \u003e\u003e 8, off \u0026 0xff, off \u003e\u003e 8}; ESP_ERROR_CHECK(i2c_master_transmit(dev_handle,buf,5,-1)); } I also wrote an update_servos function that takes in all the target servo angles, and smoothly turned the servos until it reached the target angles:\nvoid update_servos(double target[6]){ while (cur_angles[0] != target[0] || cur_angles[1] != target[1] || cur_angles[2] != target[2] || cur_angles[3] != target[3] || cur_angles[4] != target[4] || cur_angles[5] != target[5]) { // turn all servos slowly at the same pace so that it looks smoother for (int i=0; i\u003c6; i++){ double diff = target[i] - cur_angles[i]; if (diff == 0) continue; else if (diff \u003e 0) cur_angles[i] += (diff \u003e UPDATE_RATE) ? UPDATE_RATE : diff; else if (diff \u003c 0) cur_angles[i] += (diff \u003c -UPDATE_RATE) ? -UPDATE_RATE : diff; set_angle(i,cur_angles[i]); } delay(UPDATE_DELAY); } } // maybe I should just make target a global var Inverse Kinematics I treated the arm as a 3 DOF planar arm, that could rotate. Thus, I just had to solve 3 DOF inverse kinematics to move the end effector in a 2d plane, and rotate the arm to achieve 3d.\nThe idea is when the arm wanted to pick up a colored block, it could rotate so that it was looking directly at it first (and thus in the same plane as the block), then only reach for it.\nI learned the math by looking at the slides from this video. It talks about solving 2 DOF IK using geometry and algebra, and expanding it to solve 3 DOF IK.\nTaking some screenshots from the video,\nFor 2 DOF:\nC1 means cos(theta1), C12 means cos(theta1 + theta2)\nFor 3 DOF: Still, I recommend going through the video and looking at the slides for more understanding.\nMy implementation in code: expand bool ik_solve(double target[3], double sol_1[3], double sol_2[3]){ double x = target[0], y = target[1], psi = target[2]; double theta1,theta2; // use 2R equations double p2x = x - A3*cos(DEG_TO_RAD(psi)); double p2y = y - A3*sin(DEG_TO_RAD(psi)); theta2 = acos((p2x*p2x + p2y*p2y - A1*A1 - A2*A2) / (2 * A1 * A2)); //TODO figure out the-x,-y if ((p2x \u003c 0 \u0026\u0026 p2y \u003c 0) || isnan(theta2)){ return false; } // find 1st solution if (p2x \u003e= 0) theta1 = atan(p2y/p2x) - atan( A2*sin(theta2) / (A1 + A2*cos(theta2)) ); else theta1 = M_PI - atan(p2y/p2x) - atan( A2*sin(theta2) / (A1 + A2*cos(theta2)) ); sol_1[0] = RAD_TO_DEG(theta1); sol_1[1] = RAD_TO_DEG(theta2); sol_1[2] = psi - sol_1[0] - sol_1[1]; // find 2nd solution theta2 = -theta2; if (p2x \u003e= 0) theta1 = atan(p2y/p2x) - atan( A2*sin(theta2) / (A1 + A2*cos(theta2)) ); else theta1 = M_PI - atan(p2y/p2x) - atan( A2*sin(theta2) / (A1 + A2*cos(theta2)) ); sol_2[0] = RAD_TO_DEG(theta1); sol_2[1] = RAD_TO_DEG(theta2); sol_2[2] = psi - sol_2[0] - sol_2[1]; return true; } void convert_angles(double sol[3]){ //TODO might need to do some stuff about looping angles, like % 360 etc // convert theoretical/irl angles into servo angles sol[0] = 90 + (EQB1 - sol[0]); sol[1] = 90 + (sol[1] - EQB2); sol[2] = 90 + (EQB3 - sol[2]); } bool choose_sol(double final_sol[3], double sol_1[3], double sol_2[3]){ double score_1 = NAN; double score_2 = NAN; // TODO is there a better way to write this? // check if angles are in servo's range if (sol_1[0] \u003c= SERVO_RANGE \u0026\u0026 sol_1[0] \u003e= 0 \u0026\u0026 sol_1[1] \u003c= SERVO_RANGE \u0026\u0026 sol_1[1] \u003e= 0 \u0026\u0026 sol_1[2] \u003c= SERVO_RANGE \u0026\u0026 sol_1[2] \u003e= 0){ // calculate score for sol_1 score_1 = pow(cur_angles[1] - sol_1[0],2) + pow(cur_angles[2] - sol_1[1],2) + pow(cur_angles[3] - sol_1[2],2); } if (sol_2[0] \u003c= SERVO_RANGE \u0026\u0026 sol_2[0] \u003e= 0 \u0026\u0026 sol_2[1] \u003c= SERVO_RANGE \u0026\u0026 sol_2[1] \u003e= 0 \u0026\u0026 sol_2[2] \u003c= SERVO_RANGE \u0026\u0026 sol_2[2] \u003e= 0){ score_2 = pow(cur_angles[1] - sol_2[0],2) + pow(cur_angles[2] - sol_2[1],2) + pow(cur_angles[3] - sol_2[2],2); } if (isnan(score_1) \u0026\u0026 isnan(score_2)){ return false; } if (isnan(score_1)) memcpy(final_sol,sol_2,sizeof(double)*3); // must use sol_2 else if(isnan(score_2)) memcpy(final_sol,sol_1,sizeof(double)*3); // must use sol_1 else if (score_1 \u003e score_2) memcpy(final_sol,sol_2,sizeof(double)*3); // sol_2 less change else if (score_1 \u003c= score_2) memcpy(final_sol,sol_1,sizeof(double)*3); // sol_1 less change or equal amount of change return true; } When the second joint is in (-,+), the formula for theta1 is slightly different. The math when second joint is in (+,-) is the same tho. Not too sure on (-,-).\nOne of the problems I faced is that there had to be a third argument psi (the orientation of the gripper) in order to solve the IK, and not just x,y. I wanted the GUI to just control the x,y coordinates and dont worry about the psi value, so I dealt with this by just trying a bunch of psi values for each x,y:\nbool is_successful = false; for (double psi=-180; psi \u003c= 180; psi += 15) { coords[2] = psi; double sol_1[3] = {0,0,0}; double sol_2[3] = {0,0,0}; if (!ik_solve(coords,sol_1,sol_2)) continue; convert_angles(sol_1); convert_angles(sol_2); double final_sol[3] = {0,0,0}; if (!choose_sol(final_sol,sol_1,sol_2)) continue; memcpy(\u0026target_angles[1],final_sol,sizeof(double)*3); update_servos(target_angles); is_successful = true; break; } // there's probably better ways to deal with this Forward Kinematics Compared to inverse kinematics, planar forward kinematics is simpler, and is just some trigonometry: forward kinematics math\nI wrote some code to help check if solutions from my inverse kinematics code was correct:\nimport math cos = lambda degrees: math.cos(math.radians(degrees)) sin = lambda degrees: math.sin(math.radians(degrees)) # link lengths (cm) a1 = 10.5 a2 = 12.4 a3 = 18.2 # theoretical angles (degrees) theta1 = ... theta2 = ... theta3 = ... x = a1*cos(theta1) + a2*cos(theta1+theta2) + a3*cos(theta1+theta2+theta3) y = a1*sin(theta1) + a2*sin(theta1+theta2) + a3*sin(theta1+theta2+theta3) psi = theta1 + theta2 + theta3 print(\"x: {}, y: {}, psi: {}\".format(x,y,psi)) Exploring configurations In my project, theoretical / irl angles means the angle from the horizontal.\nAnticlockwise is positive, and clockwise is negative: theoretical angles\nThis follows the IK math.\nActual servo angles are the angles written to the servos. So depending on how you screw in the arm links to the servo horns, different servo angles correspond to different theoretical angles. I call these different configurations.\nThrough my own measurements (using a protractor and a pen, not the most accurate), I found that the MG996R servo can move from angles 0 - 178. When the servo angle is 90 degrees, I like to say that the servo is in equilibrium position.\ndifferent configurations for one servo/joint\nSo depending on different configurations for all 3 joints, the reachable workspace is different.\nI used forward kinematics and wrote some code to visualise the reachable workspace of different configurations, to help me choose which configuration to use:\nimport matplotlib.pyplot as plt from matplotlib.patches import Arc import math cos = lambda degrees: math.cos(math.radians(degrees)) sin = lambda degrees: math.sin(math.radians(degrees)) # link lengths (cm) a1 = 10.5 a2 = 12.4 a3 = 18.2 fig, ax = plt.subplots() # eqb1 means the theoretical angle of first joint, when first servo is in equilibrium position def draw(eqb1,eqb2,eqb3): for theta1 in range(eqb1-90,eqb1+90+1): for theta2 in range(eqb2-90,eqb2+90+1): # coordinates of joint 2 p2x = a1*cos(theta1) + a2*cos(theta1+theta2) p2y = a1*sin(theta1) + a2*sin(theta1+theta2) arc = Arc(xy=(p2x,p2y),width=2*a3,height=2*a3, angle=theta1+theta2,theta1=eqb3-90,theta2=eqb3+90, edgecolor=\"blue\",lw=0.5) ax.add_patch(arc) #plt.plot(p2x,p2y,\"ro\") print(\"theta1: {}, theta2: {}\".format(theta1,theta2)) draw(...,...,...) full_radius = a1+a2+a3 ax.set_aspect('equal') ax.set_xlim(-50, 50) ax.set_ylim(-50, 50) ax.axhline(0) ax.axvline(0) plt.show() Some examples:\n(0,0,0) (45,0,0) (45,-60,-60) (45,0,0), means that for servo1, it is at eqb position when theoretical angle = 45. For servo 2 and 3, they are at eqb position when theoretical angle = 0\nThe coordinate (0,0) is at servo 1’s servo horn.\nSome configs might look good, but might result in collisions with the table or arm itself (physical limitations).\nCurrently the config being used is (45,0,0).\nGUI and Server GUI\nI used the reachable workspace visualisation and put in on a html canvas. Everytime you click on the canvas, the coordinate will be sent through POST to the server.\nvar resp = await fetch(\"http://\" + ip + \":5000/move\", { method: \"POST\", body: JSON.stringify({x: x, y :y}), headers: {\"Content-type\": \"application/json; charset=UTF-8\"} }); The red dot on the canvas represents where the end effector is currently (sometimes it works, sometimes it doesn’t).\nOnce the server gets the POST request, it will send a command to the ESP through serial/UART:\n@app.route(\"/move\",methods=[\"POST\"]) def move(): try: msg = str(request.json[\"x\"]) + \",\" + str(request.json[\"y\"]) + \"\\n\" ser.read_until(b\"choice:\") ser.write(b\"0\\n\") ser.read_until(b\"x,y:\") ser.write(msg.encode()) ser.read_until(b\"success: \") if(ser.read(1) == b\"1\"): return {\"success\": True},200 else: return {\"success\":False},200 except Exception as e: app.logger.warning(\"ESP not connected\") print(e) return {\"success\":False},200 This is a good time to mention that the ESP32 is actually running a menu service (like pwn challs):\nwhile (true){ // 1: move 2: control gripper 3: rotate base char choice_str[10] = \"\"; uart_print(\"choice:\\n\"); uart_fgets(choice_str,10); int choice = atoi(choice_str); ... switch (choice) { case 0: // move end effector ... case 1: // control gripper ... case 2: // rotate base ... default: uart_print(\"no such choice\\n\"); break; } } The server actually first sends the command code, then sends the info necessary to execute the commands.\nSo after the server sends the coordinates to the ESP32, the ESP32 will execute the command by telling the servo driver to move the servos. The ESP32 will also tell the server whether the command was successful or not. The process for controlling gripper and rotating base is similar.\nWhen you first power on everything, the ESP32 will of course boot up much quicker than the pi, so by the time server.py runs on the pi, and the pi starts listening on the serial connection, it won’t catch the initial string “choice:” from the esp32. So to solve this, just:\nser.write(b\"5\\n\") ser.read_until(b\"no such choice\\n\") # load b\"choice:\" in the RX pyserial buf send an invalid command and get a response at the start of server.py. That way the “choice:” strings sent afterwards are actually listened and stored in the serial buffer.\nObject recognition To just open the camera connected to the pi:\nimport cv2 as cv import numpy as np from picamera2 import Picamera2 cam = Picamera2() cam.start() while True: frame = cam.capture_array() if frame is None: print(\"no frame captured\") break frame = cv.cvtColor(frame,cv.COLOR_RGB2BGR) # constantly show new frame cv.imshow(\"frame\",frame) if cv.waitKey(1) == ord(\"q\"): break cv.destroyAllWindows() I also worked on the object recognition part a bit, on my laptop:\nThere should have been a video here but your browser does not seem to support it. import cv2 as cv import numpy as np cap = cv.VideoCapture(0) if not cap.isOpened(): print(\"Cannot open camera\") exit() while True: ret, frame = cap.read() if not ret: print(\"no frame read\") break img = cv.cvtColor(frame,cv.COLOR_BGR2HSV) # mask colors mask1 = cv.inRange(img,(0,100,50),(5,255,255)) mask2 = cv.inRange(img,(175,100,50),(179,255,255)) img = cv.bitwise_or(mask1,mask2) # opening kernel = np.ones((3,3),np.uint8) img = cv.morphologyEx(img,cv.MORPH_OPEN,kernel) # find and draw contours contours,hierarchy = cv.findContours(img,cv.RETR_TREE,cv.CHAIN_APPROX_SIMPLE) if contours: c = max(contours,key=cv.contourArea) peri = cv.arcLength(c,True) approx = cv.approxPolyDP(c,0.015*peri,True) if len(approx) \u003c 9: cv.drawContours(frame,[approx],-1,(0,0,150),3) # frame still in bgr form # constantly show new frame cv.imshow(\"frame\",frame) if cv.waitKey(1) == ord(\"q\"): break cap.release() cv.destroyAllWindows() I just did some masking, morphological operations, countours finding, and contour approximation.\nIt doesn’t work too well when a bunch of blocks are near each other since it’ll form a big contour, but I think this can be solved by moving the arm over the blocks and having a top down view.\nFor this to work on the fisheye camera, I’ll prob have to put a filter since the frames from the fisheye camera are more reddish, and then adjust the values for the mask.\nTo finish this project, I’ll have to implement a way to find distance (maybe focal length method), then do some math to estimate where the block is on the plane, and slowly move towards the block. I also have to implement the object recognition for blue and green blocks, as well as recognising the boxes to put the blocks into. Also, I have to write the logic for scanning/choosing which blocks to go for first.\nConclusion I learned a huge ton from this project, and had a lot of fun. Don’t hesitate to tell me what improvements I can make to it. Maybe I’ll finish it some day.\n",
+  "wordCount" : "3752",
+  "inLanguage": "en",
+  "image":"https://zhirenliew.github.io/robot_arm/cover.JPG","datePublished": "2025-08-28T23:24:15+08:00",
+  "dateModified": "2025-08-28T23:24:15+08:00",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://zhirenliew.github.io/posts/robot_arm/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "zhiren",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://zhirenliew.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://zhirenliew.github.io" accesskey="h" title="zhiren (Alt + H)">zhiren</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://zhirenliew.github.io/about/" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="https://zhirenliew.github.io">Home</a>&nbsp;»&nbsp;<a href="https://zhirenliew.github.io/posts/">Posts</a></div>
+    <h1 class="post-title">
+      Robot arm project
+    </h1>
+    <div class="post-meta"><span title='2025-08-28 23:24:15 +0800 +08'>August 28, 2025</span>&nbsp;·&nbsp;18 min
+
+</div>
+  </header> 
+  <div class="post-content"><h2 id="overview">Overview<a hidden class="anchor" aria-hidden="true" href="#overview">#</a></h2>
+<video width="750" class="video-shortcode" preload="" controls>
+    <source src="/robot_arm/demo.mp4" type="">
+    There should have been a video here but your browser does not seem
+            to support it.
+</video>
+
+<p>I built a robot arm with a camera attached to the end of it.<br>
+The arm is built with the aim of picking up and sorting colored blocks into corresponding boxes, but the project is currently <strong>unfinished</strong>, as I want to work on other projects. The mechanical, electrical and low level software part is mostly finished, leaving only the object recognition and block position estimation part left.</p>
+<figure class="align-center ">
+    <img loading="lazy" src="/robot_arm/blocks.JPG#center"
+         alt="colored blocks" width="350"/> <figcaption>
+            <p>colored blocks</p>
+        </figcaption>
+</figure>
+
+<h2 id="mechanical">Mechanical<a hidden class="anchor" aria-hidden="true" href="#mechanical">#</a></h2>
+<p><img loading="lazy" src="/robot_arm/mechanical.JPG" alt=""  />
+
+The brackets, grippers, structural parts are all from a kit I bought from <a href="https://shopee.com.my/DIYMORE-Robotic-Arm-Kit-6DOF-Programming-Robot-Arm-DIY-Programming-Robot-Kit-with-Open-Source-Code-and-Tutorial-i.145270449.21082575644">shopee</a>. I also got 6 MG996R servos, and assembled the arm using this <a href="https://m.media-amazon.com/images/I/A1Fl+yg1TGL.pdf">guide</a>. (The guide is for another robot arm kit, but its quite similar to this one.)</p>
+<p><figure class="align-center ">
+    <img loading="lazy" src="/robot_arm/drill.jpg#center"
+         alt="where I drilled"/> <figcaption>
+            <p>where I drilled</p>
+        </figcaption>
+</figure>
+
+I also drilled some holes in the arm base so that I could secure the base servo better, as it was quite wobbly and unstable when the arm moved. Also secured some connections with more screws and nuts.</p>
+<p>There&rsquo;s six servos, 1 servo is for rotation of base, 3 servos are for 3 planar arm joints, 1 servo is for rotating the gripper, and one is for controlling the gripper. Technically its capable of 5 DOF, but I didn&rsquo;t utilise the servo for rotating the gripper, its only 4 DOF.</p>
+<blockquote>
+<p>The servo horn of the base servo wobbles quite a bit, since the rest of the arm&rsquo;s weight is being supported by it. Not too sure how to strengthen it tho.</p>
+</blockquote>
+<figure class="align-center ">
+    <img loading="lazy" src="/robot_arm/clamp.jpg#center" width="500"/> 
+</figure>
+
+<p>To hold the arm still on my table so that it wouldn&rsquo;t jump around when its moving, I screwed its base to a piece of wood, and g clamped it to the table.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center"></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><img loading="lazy" src="/robot_arm/cad_holder.png" alt=""  />
+</td>
+<td style="text-align:left"><img loading="lazy" src="/robot_arm/real_holder.JPG" alt=""  />
+</td>
+</tr>
+</tbody>
+</table>
+<p>To attach the camera at the end of the arm, I designed a camera holder in Fusion and used a 3d printing service to print it out in PLA+.</p>
+<blockquote>
+<p>Learned that I should always leave space in my design to actually fasten the screws, and leave more space for nuts, since it was difficult to install the arm-holder screws, and fasten the holder-camera nuts.</p>
+</blockquote>
+<h2 id="electrical">Electrical<a hidden class="anchor" aria-hidden="true" href="#electrical">#</a></h2>
+<table>
+<thead>
+<tr>
+<th style="text-align:center"></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><img loading="lazy" src="/robot_arm/top_perfboard.JPG" alt=""  />
+</td>
+<td style="text-align:left"><img loading="lazy" src="/robot_arm/bot_perfboard.JPG" alt=""  />
+</td>
+</tr>
+</tbody>
+</table>
+<p>For controls, I used an ESP32, a PCA9685 servo driver, and a raspberry pi zero 2w.<br>
+The inverse kinematics code is in the ESP32, the servo driver is used to offload sending pwm signals, and the raspberry pi is used for the camera (and object recognition and approaching objects).</p>
+<blockquote>
+<p>Might not have needed the ESP, but I think its nice to delegate off the inverse kinematics from the pi. Plus I wanted to learn to use ESP-IDF.</p>
+</blockquote>
+<p>They&rsquo;re all connected on a perfboard (my first ever perfboard!).<br>
+To connect the servo driver to the perfboard, I had to desolder the pins and resolder into the board. The ESP32 and pi is just plugged into soldered female pin headers on the perfboard.</p>
+<p>The ESP32&rsquo;s RX,TX lines are connected with the raspberry pi for UART, and the ESP32&rsquo;s SCL,SDA lines are connected with the servo driver for I2C.</p>
+<figure class="align-center ">
+    <img loading="lazy" src="/robot_arm/camera.JPG#center"
+         alt="fisheye camera" width="400"/> <figcaption>
+            <p>fisheye camera</p>
+        </figcaption>
+</figure>
+
+<p>I used a <a href="https://my.cytron.io/p-fish-eye-lense-raspberry-pi-5mp-ir-camera?r=1&amp;gad_source=1&amp;gad_campaignid=17507688159&amp;gbraid=0AAAAADh9ZNC0M41u9iVwgTGQxQHvvqZlR&amp;gclid=Cj0KCQjw5c_FBhDJARIsAIcmHK99zqFUSS1fdl_RQxlxCZSEzCgWC1HLr7s83U_rwIc9XQViupy9DdUaAiZDEALw_wcB">fisheye raspberry pi camera</a>, so that it could have a wider view and detect more blocks. The camera is connected to the pi through a CSI ribbon cable.</p>
+<p>The raspberry pi zero 2w&rsquo;s CSI port accepted 22pins 0.5mm pitch, but the camera accepted 15pins 1mm pitch CSI ribbon cables, so to connect them you need 15pins to 22pins CSI ribbon cables. But here I faced a problem, there were just no 15pins to 22pins ribbon cables that were long enough for me (needed ~70cm). The only ones long enough were the 15pins to 15pins 1mm pitch ribbon cables.</p>
+<figure class="align-center ">
+    <img loading="lazy" src="/robot_arm/extenders.JPG#center"
+         alt="ribbon cable extenders" width="400"/> <figcaption>
+            <p>ribbon cable extenders</p>
+        </figcaption>
+</figure>
+
+<p>I solved the problem by finding these nice little <a href="https://shopee.com.my/FFC-FPC-Extension-Zip-Connector-Board-0.5mm-1.0mm-Pitch-4p-to-Various-Pin-Extend-PCB-i.59288471.12078939536">ribbon cable extenders</a>. So now I could connect 22pins to 15pins cables from the pi to these extenders, and use a 15pins to 15pins cable to join the extender and the camera.</p>
+<p>But there was another problem. The 15-22pin ribbon cables had exposed pins on the same side, but the 15-15pin ribbon cables had exposed pins on opposite sides. This meant that if I used this 15-15pin ribbon cable to connect to the extender and camera, I would have to twist the cable to connect to the camera, resulting in the pins being flipped. So pin #1 on the extender, would be connected to pin #15 on the camera.</p>
+<figure class="align-center ">
+    <img loading="lazy" src="/robot_arm/exposed_pins.JPG#center"
+         alt="self-made exposed pins" width="400"/> <figcaption>
+            <p>self-made exposed pins</p>
+        </figcaption>
+</figure>
+
+<p>I solved the problem by exposing pins of the ribbon cable myself by following this <a href="https://www.youtube.com/watch?v=kXEfidsHGNA&amp;t=240s&amp;ab_channel=3DHorizons">youtube video</a>, and scratching away the insulation using a utility/paper knife. The camera then worked.</p>
+<h3 id="power">Power<a hidden class="anchor" aria-hidden="true" href="#power">#</a></h3>
+<figure class="align-center ">
+    <img loading="lazy" src="/robot_arm/electronics.JPG#center"
+         alt="the electronics setup"/> <figcaption>
+            <p>the electronics setup</p>
+        </figcaption>
+</figure>
+
+<p>As for the power supply, I used a 12V 200W PSU thats plugged into a wall socket, and connected it to a bunch of parallel XL4015 step down buck converters.</p>
+<p>Each MG996R servos needed 6V and had a stall current of 2.5A, and the max output current for one XL4015 was 5A. So I connected 1 buck converter to 2 servos, and used 3 buck converters in total for 6 servos. Even if 2 servos connected to one buck converter stalled at the same time, it would still pull within the max output current of the buck converter. (probably not good to have no margin space/wiggle room,but oh well)</p>
+<blockquote>
+<p>Afterwards, I actually found a <a href="https://shopee.com.my/300W-20A-DC-DC-Buck-Converter-Step-Down-Regulator-Module-Adjustable-Charger-Board-Power-Supply-TechMakers-Regulator-i.55645224.27411383719?sp_atk=062f7513-b44b-4d4e-99ad-8f2448ca8b1a&amp;xptdk=062f7513-b44b-4d4e-99ad-8f2448ca8b1a">step down buck converter</a> which could handle outputting at 20A, which might be a better option. But the buck converter apartment I have looks pretty cool, plus idt there&rsquo;s a part name/datasheet attached, so I&rsquo;ll just stick with my current setup for now.</p>
+</blockquote>
+<p>In the case that all the servos stalled (which probably won&rsquo;t happen), the servos would pull a total of 90W, which is way below the PSU limit, even after accounting for power loss in the buck converter.</p>
+<p>Why not use a 6V PSU, and straight connect to servos instead? <br>
+I remember that I didn&rsquo;t really find any 6V PSU that could handle the power output I needed, but the convincing point for me was that I wanted the good line and load regulation by buck converters.</p>
+<p>To power the pi and ESP32, I just connected 5V from another buck converter (so in total there&rsquo;s 4 buck converters) to them:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-txt" data-lang="txt"><span style="display:flex;"><span>5V -&gt; VIN, GND -&gt; common ground
+</span></span></code></pre></div><p>The ESP32 devboard then converts the 5V to 3.3V, since the ESP32 board actually operates in 3.3v.
+Then to power the PCA9685 servo driver:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-txt" data-lang="txt"><span style="display:flex;"><span>ESP32 3.3V -&gt; PCA9685 VCC,  PCA9685 GND -&gt; common ground
+</span></span></code></pre></div><p>The VCC of the servo driver has to match the logic level of the esp32, as the VCC is used for the 10K pull ups of the I2C. (<a href="https://learn.adafruit.com/16-channel-pwm-servo-driver/pinouts">ref</a>)</p>
+<p>The output voltage of the pi is also 3.3V, so its perfect for UART with ESP32. (since ESP32 can also only handle max 3.3V pin inputs.)</p>
+<p>The total current load by the ESP32, Raspberry Pi, and also the PCA9685 servo driver is definetely under 5A, so the buck converter can totally handle it.</p>
+<h3 id="wiring">Wiring<a hidden class="anchor" aria-hidden="true" href="#wiring">#</a></h3>
+<p>All the wires connected are of the appropriate AWG (I think).</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center"></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><img loading="lazy" src="/robot_arm/servo_wire1.JPG" alt=""  />
+</td>
+<td style="text-align:left"><img loading="lazy" src="/robot_arm/servo_wire2.JPG" alt=""  />
+</td>
+</tr>
+</tbody>
+</table>
+<p>I stripped away the dupont female headers of the servo wires, and just soldered them to longer wires, that&rsquo;s soldered to the perfboard / connected to buck converter or common ground.</p>
+<figure class="align-center ">
+    <img loading="lazy" src="/robot_arm/cable_management.JPG#center"
+         alt="cable management"/> <figcaption>
+            <p>cable management</p>
+        </figcaption>
+</figure>
+
+<p>For cable management, I inserted all the wires into a long spiral cable wrap that&rsquo;s ziptied along the arm (so that it follows the arm no matter how the arm moves and won&rsquo;t dangle and fly around). The camera ribbon cable is just duct taped to the servos.</p>
+<p>All the other wire connections are made through either terminal blocks or soldered onto the perfboard.</p>
+<h2 id="software">Software<a hidden class="anchor" aria-hidden="true" href="#software">#</a></h2>
+<h3 id="system-overview">System overview<a hidden class="anchor" aria-hidden="true" href="#system-overview">#</a></h3>
+<p>The pi runs two python scripts</p>
+<ul>
+<li>a web server that gives a GUI for controlling the robot arm</li>
+<li>a script that opens the camera (and was supposed to run object recognition).</li>
+</ul>
+<p>When another computer connects to the web server and clicks a coordinate on the GUI, the raspberry pi talks to the ESP (through UART) to move to that coordinate. The ESP does some inverse kinematics, and calculates the joint angles. It then tells the servo driver (through I2C) what angles to turn to, and the driver will controls the servos through pwm signals. The arm then moves to the coordinate.</p>
+<p>Its the same for turning the arm&rsquo;s base and controlling the gripper, just without the IK.</p>
+<p>The code for the project can be found <a href="https://github.com/zhirenliew/robot_arm">here</a>.<br>
+The ESP32&rsquo;s software is written using <a href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/get-started/index.html">ESP-IDF</a>.</p>
+<blockquote>
+<p>The chatbot on the esp-idf docs is really useful for finding how to do things and getting info.</p>
+</blockquote>
+<h3 id="talking-through-uart">Talking through UART<a hidden class="anchor" aria-hidden="true" href="#talking-through-uart">#</a></h3>
+<p>To setup UART2 on the ESP32:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-C" data-lang="C"><span style="display:flex;"><span>    <span style="color:#a6e22e">ESP_ERROR_CHECK</span>(<span style="color:#a6e22e">uart_driver_install</span>(UART_NUM_2,<span style="color:#ae81ff">0x2000</span>,<span style="color:#ae81ff">0x2000</span>,<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">0</span>));
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">uart_config_t</span> uart_config <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>        .baud_rate <span style="color:#f92672">=</span> <span style="color:#ae81ff">115200</span>,
+</span></span><span style="display:flex;"><span>        .data_bits <span style="color:#f92672">=</span> UART_DATA_8_BITS,
+</span></span><span style="display:flex;"><span>        .parity <span style="color:#f92672">=</span> UART_PARITY_DISABLE,
+</span></span><span style="display:flex;"><span>        .stop_bits <span style="color:#f92672">=</span> UART_STOP_BITS_1,
+</span></span><span style="display:flex;"><span>        .flow_ctrl <span style="color:#f92672">=</span> UART_HW_FLOWCTRL_DISABLE, <span style="color:#75715e">// only tx,rx, no cts,rts
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        .source_clk <span style="color:#f92672">=</span> UART_SCLK_DEFAULT,
+</span></span><span style="display:flex;"><span>    };
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">ESP_ERROR_CHECK</span>(<span style="color:#a6e22e">uart_param_config</span>(UART_NUM_2,<span style="color:#f92672">&amp;</span>uart_config));
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">ESP_ERROR_CHECK</span>(<span style="color:#a6e22e">uart_set_pin</span>(UART_NUM_2,TX_PIN,RX_PIN,UART_PIN_NO_CHANGE,UART_PIN_NO_CHANGE));
+</span></span></code></pre></div><p>And for reading and writing, I made some functions:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-C" data-lang="C"><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">uart_print</span>(<span style="color:#66d9ef">char</span><span style="color:#f92672">*</span> str){
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">uart_write_bytes</span>(UART_NUM_2,str,<span style="color:#a6e22e">strlen</span>(str));
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">char</span> <span style="color:#a6e22e">uart_getc</span>(){
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// block main thread until read a byte
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">size_t</span> uart_buf_len <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">while</span> (uart_buf_len <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">ESP_ERROR_CHECK</span>(<span style="color:#a6e22e">uart_get_buffered_data_len</span>(UART_NUM_2,<span style="color:#f92672">&amp;</span>uart_buf_len));
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// there is data to be read
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">char</span> c;
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">uart_read_bytes</span>(UART_NUM_2,<span style="color:#f92672">&amp;</span>c,<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">0</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> c;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">uart_fgets</span>(<span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>buf, <span style="color:#66d9ef">int</span> len) {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// len includes the null byte
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">int</span> i;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> (i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> (len<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>); i<span style="color:#f92672">++</span>){
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">char</span> c <span style="color:#f92672">=</span> <span style="color:#a6e22e">uart_getc</span>();
+</span></span><span style="display:flex;"><span>        buf[i] <span style="color:#f92672">=</span> c;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (c <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;\n&#39;</span>) {
+</span></span><span style="display:flex;"><span>            i<span style="color:#f92672">++</span>;
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">break</span>;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    buf[i] <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;\x00&#39;</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>...
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">uart_print</span>(<span style="color:#e6db74">&#34;...&#34;</span>);
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">uart_fgets</span>(...,<span style="color:#ae81ff">30</span>);
+</span></span></code></pre></div><p>On the pi, I just used pyserial:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python3" data-lang="python3"><span style="display:flex;"><span>    ser <span style="color:#f92672">=</span> serial<span style="color:#f92672">.</span>Serial(<span style="color:#e6db74">&#34;/dev/serial0&#34;</span>,<span style="color:#ae81ff">115200</span>,timeout<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">...</span>
+</span></span><span style="display:flex;"><span>    ser<span style="color:#f92672">.</span>read_until(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;...&#34;</span>)
+</span></span><span style="display:flex;"><span>    ser<span style="color:#f92672">.</span>write(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;...&#34;</span>)
+</span></span></code></pre></div><h3 id="talking-to-servo-driver-through-i2c">Talking to Servo Driver through I2C<a hidden class="anchor" aria-hidden="true" href="#talking-to-servo-driver-through-i2c">#</a></h3>
+<p>To setup I2C on the ESP32:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-C" data-lang="C"><span style="display:flex;"><span>    <span style="color:#75715e">// initialise esp32 as i2c master
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">i2c_master_bus_config_t</span> i2c_mst_config <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>        .scl_io_num <span style="color:#f92672">=</span> I2C_MASTER_SCL_IO,
+</span></span><span style="display:flex;"><span>        .sda_io_num <span style="color:#f92672">=</span> I2C_MASTER_SDA_IO,
+</span></span><span style="display:flex;"><span>        .i2c_port <span style="color:#f92672">=</span> I2C_NUM_0,
+</span></span><span style="display:flex;"><span>        .clk_source <span style="color:#f92672">=</span> I2C_CLK_SRC_DEFAULT,
+</span></span><span style="display:flex;"><span>        .glitch_ignore_cnt <span style="color:#f92672">=</span> <span style="color:#ae81ff">7</span>,
+</span></span><span style="display:flex;"><span>        .flags.enable_internal_pullup <span style="color:#f92672">=</span> true,
+</span></span><span style="display:flex;"><span>    };
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">ESP_ERROR_CHECK</span>(<span style="color:#a6e22e">i2c_new_master_bus</span>(<span style="color:#f92672">&amp;</span>i2c_mst_config,<span style="color:#f92672">&amp;</span>bus_handle));
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// initialise pca9685 device
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">i2c_device_config_t</span> dev_cfg <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>        .device_address <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x40</span>,
+</span></span><span style="display:flex;"><span>        .dev_addr_length <span style="color:#f92672">=</span> I2C_ADDR_BIT_LEN_7,
+</span></span><span style="display:flex;"><span>        .scl_speed_hz <span style="color:#f92672">=</span> I2C_MASTER_FREQ_HZ,
+</span></span><span style="display:flex;"><span>    };
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">ESP_ERROR_CHECK</span>(<span style="color:#a6e22e">i2c_master_bus_add_device</span>(bus_handle,<span style="color:#f92672">&amp;</span>dev_cfg,<span style="color:#f92672">&amp;</span>dev_handle));
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">ESP_LOGI</span>(TAG,<span style="color:#e6db74">&#34;I2C initialised succesfully&#34;</span>);
+</span></span></code></pre></div><p>Reading from the PCA9685 <a href="https://www.alldatasheet.com/datasheet-pdf/pdf/293576/NXP/PCA9685.html">datasheet</a>, as well as referencing Adafruit&rsquo;s Arduino PCA9685 library <a href="https://github.com/adafruit/Adafruit-PWM-Servo-Driver-Library/blob/master/Adafruit_PWMServoDriver.cpp">source code</a>, this is how I wrote the driver&rsquo;s PRE_SCALE value and turned on auto increment for consecutive register writing:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-C" data-lang="C"><span style="display:flex;"><span><span style="color:#75715e">// PRE_SCALE determines pwm output freq / frame size
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// round(25MHz/(4096*50Hz)) - 1 = 121
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#75715e">#define PRESCALE_VAL 121
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>...
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// write PRESCALE (can only be written in sleep mode)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">uint8_t</span> init_mode1 <span style="color:#f92672">=</span> <span style="color:#a6e22e">read_reg</span>(REG_MODE1) <span style="color:#f92672">&amp;</span> <span style="color:#f92672">~</span>MODE1_SLEEP;
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">write_reg</span>(REG_MODE1,init_mode1 <span style="color:#f92672">|</span> MODE1_SLEEP);
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">write_reg</span>(REG_PRESCALE,PRESCALE_VAL);
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">write_reg</span>(REG_MODE1,init_mode1);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// turn on auto increment
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">// have to wait 500 microseconds after awake from sleep before restarting
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#a6e22e">delay</span>(<span style="color:#ae81ff">1</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">write_reg</span>(REG_MODE1,init_mode1 <span style="color:#f92672">|</span> MODE1_AI <span style="color:#f92672">|</span> MODE1_RESTART);
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">ESP_LOGI</span>(TAG,<span style="color:#e6db74">&#34;PRESCALE and AUTO_INCREMENT initialised&#34;</span>);  
+</span></span></code></pre></div><p>To set the angle of a servo:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-C" data-lang="C"><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">set_angle</span>(<span style="color:#66d9ef">uint8_t</span> id, <span style="color:#66d9ef">double</span> angle){
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (angle <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">178</span> <span style="color:#f92672">||</span> angle <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">0</span>){
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">ESP_LOGE</span>(TAG,<span style="color:#e6db74">&#34;set_angle(), tried to set servo %d to angle %f&#34;</span>,id,angle);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// map angle to pwm width
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">double</span> pwm_width <span style="color:#f92672">=</span> MIN_WIDTH <span style="color:#f92672">+</span> angle <span style="color:#f92672">*</span> ((MAX_WIDTH <span style="color:#f92672">-</span> MIN_WIDTH)<span style="color:#f92672">/</span>(<span style="color:#66d9ef">double</span>)SERVO_RANGE);
+</span></span><span style="display:flex;"><span>           pwm_width <span style="color:#f92672">=</span> <span style="color:#a6e22e">round</span>(pwm_width);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">uint16_t</span> on <span style="color:#f92672">=</span> DELAY_PWM;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">uint16_t</span> off <span style="color:#f92672">=</span> DELAY_PWM <span style="color:#f92672">+</span> (<span style="color:#66d9ef">uint16_t</span>)pwm_width;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">uint8_t</span> buf[] <span style="color:#f92672">=</span> {REG_LED5 <span style="color:#f92672">+</span> <span style="color:#ae81ff">4</span><span style="color:#f92672">*</span>id, on <span style="color:#f92672">&amp;</span> <span style="color:#ae81ff">0xff</span>, on <span style="color:#f92672">&gt;&gt;</span> <span style="color:#ae81ff">8</span>, off <span style="color:#f92672">&amp;</span> <span style="color:#ae81ff">0xff</span>, off <span style="color:#f92672">&gt;&gt;</span> <span style="color:#ae81ff">8</span>};
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">ESP_ERROR_CHECK</span>(<span style="color:#a6e22e">i2c_master_transmit</span>(dev_handle,buf,<span style="color:#ae81ff">5</span>,<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>));
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>I also wrote an update_servos function that takes in all the target servo angles, and smoothly turned the servos until it reached the target angles:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-C" data-lang="C"><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">update_servos</span>(<span style="color:#66d9ef">double</span> target[<span style="color:#ae81ff">6</span>]){
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">while</span> (cur_angles[<span style="color:#ae81ff">0</span>] <span style="color:#f92672">!=</span> target[<span style="color:#ae81ff">0</span>] <span style="color:#f92672">||</span> cur_angles[<span style="color:#ae81ff">1</span>] <span style="color:#f92672">!=</span> target[<span style="color:#ae81ff">1</span>] <span style="color:#f92672">||</span> cur_angles[<span style="color:#ae81ff">2</span>] <span style="color:#f92672">!=</span> target[<span style="color:#ae81ff">2</span>] <span style="color:#f92672">||</span>
+</span></span><span style="display:flex;"><span>           cur_angles[<span style="color:#ae81ff">3</span>] <span style="color:#f92672">!=</span> target[<span style="color:#ae81ff">3</span>] <span style="color:#f92672">||</span> cur_angles[<span style="color:#ae81ff">4</span>] <span style="color:#f92672">!=</span> target[<span style="color:#ae81ff">4</span>] <span style="color:#f92672">||</span> cur_angles[<span style="color:#ae81ff">5</span>] <span style="color:#f92672">!=</span> target[<span style="color:#ae81ff">5</span>]) {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// turn all servos slowly at the same pace so that it looks smoother
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>; i<span style="color:#f92672">&lt;</span><span style="color:#ae81ff">6</span>; i<span style="color:#f92672">++</span>){
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">double</span> diff <span style="color:#f92672">=</span> target[i] <span style="color:#f92672">-</span> cur_angles[i];
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> (diff <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">continue</span>;
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> (diff <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span>                cur_angles[i] <span style="color:#f92672">+=</span> (diff <span style="color:#f92672">&gt;</span> UPDATE_RATE) <span style="color:#f92672">?</span> UPDATE_RATE : diff;
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> (diff <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span>                cur_angles[i] <span style="color:#f92672">+=</span> (diff <span style="color:#f92672">&lt;</span> <span style="color:#f92672">-</span>UPDATE_RATE) <span style="color:#f92672">?</span> <span style="color:#f92672">-</span>UPDATE_RATE : diff;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">set_angle</span>(i,cur_angles[i]);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">delay</span>(UPDATE_DELAY);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// maybe I should just make target a global var
+</span></span></span></code></pre></div><h3 id="inverse-kinematics">Inverse Kinematics<a hidden class="anchor" aria-hidden="true" href="#inverse-kinematics">#</a></h3>
+<p>I treated the arm as a 3 DOF planar arm, that could rotate. Thus, I just had to solve 3 DOF inverse kinematics to move the end effector in a 2d plane, and rotate the arm to achieve 3d.</p>
+<p>The idea is when the arm wanted to pick up a colored block, it could rotate so that it was looking directly at it first (and thus in the same plane as the block), then only reach for it.</p>
+<p>I learned the math by looking at the slides from this <a href="https://www.youtube.com/watch?v=NjAAKruKiQM&amp;ab_channel=ArunDayalUdai">video</a>. It talks about solving 2 DOF IK using geometry and algebra, and expanding it to solve 3 DOF IK.</p>
+<p>Taking some screenshots from the video,<br>
+For 2 DOF:</p>
+<blockquote>
+<p>C1 means cos(theta1), C12 means cos(theta1 + theta2)</p>
+</blockquote>
+<p><img loading="lazy" src="/robot_arm/2dof_1.png" alt=""  />
+
+<img loading="lazy" src="/robot_arm/2dof_2.png" alt=""  />
+
+<img loading="lazy" src="/robot_arm/2dof_3.png" alt=""  />
+</p>
+<p>For 3 DOF:
+<img loading="lazy" src="/robot_arm/3dof.png" alt=""  />
+</p>
+<blockquote>
+<p>Still, I recommend going through the video and looking at the slides for more understanding.</p>
+</blockquote>
+<p>My implementation in code:
+
+
+<p><details >
+  <summary markdown="span"><strong>expand</strong></summary>
+  <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-C" data-lang="C"><span style="display:flex;"><span><span style="color:#66d9ef">bool</span> <span style="color:#a6e22e">ik_solve</span>(<span style="color:#66d9ef">double</span> target[<span style="color:#ae81ff">3</span>], <span style="color:#66d9ef">double</span> sol_1[<span style="color:#ae81ff">3</span>], <span style="color:#66d9ef">double</span> sol_2[<span style="color:#ae81ff">3</span>]){
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">double</span> x <span style="color:#f92672">=</span> target[<span style="color:#ae81ff">0</span>], y <span style="color:#f92672">=</span> target[<span style="color:#ae81ff">1</span>], psi <span style="color:#f92672">=</span> target[<span style="color:#ae81ff">2</span>];
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">double</span> theta1,theta2;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// use 2R equations
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">double</span> p2x <span style="color:#f92672">=</span> x <span style="color:#f92672">-</span> A3<span style="color:#f92672">*</span><span style="color:#a6e22e">cos</span>(<span style="color:#a6e22e">DEG_TO_RAD</span>(psi));
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">double</span> p2y <span style="color:#f92672">=</span> y <span style="color:#f92672">-</span> A3<span style="color:#f92672">*</span><span style="color:#a6e22e">sin</span>(<span style="color:#a6e22e">DEG_TO_RAD</span>(psi));
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    theta2 <span style="color:#f92672">=</span> <span style="color:#a6e22e">acos</span>((p2x<span style="color:#f92672">*</span>p2x <span style="color:#f92672">+</span> p2y<span style="color:#f92672">*</span>p2y <span style="color:#f92672">-</span> A1<span style="color:#f92672">*</span>A1 <span style="color:#f92672">-</span> A2<span style="color:#f92672">*</span>A2) <span style="color:#f92672">/</span> (<span style="color:#ae81ff">2</span> <span style="color:#f92672">*</span> A1 <span style="color:#f92672">*</span> A2));
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">//TODO figure out  the-x,-y
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">if</span> ((p2x <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">0</span> <span style="color:#f92672">&amp;&amp;</span> p2y <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">0</span>) <span style="color:#f92672">||</span> <span style="color:#a6e22e">isnan</span>(theta2)){
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> false;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// find 1st solution
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">if</span> (p2x <span style="color:#f92672">&gt;=</span> <span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span>        theta1 <span style="color:#f92672">=</span> <span style="color:#a6e22e">atan</span>(p2y<span style="color:#f92672">/</span>p2x) <span style="color:#f92672">-</span> <span style="color:#a6e22e">atan</span>( A2<span style="color:#f92672">*</span><span style="color:#a6e22e">sin</span>(theta2) <span style="color:#f92672">/</span> (A1 <span style="color:#f92672">+</span> A2<span style="color:#f92672">*</span><span style="color:#a6e22e">cos</span>(theta2)) );
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">else</span>
+</span></span><span style="display:flex;"><span>        theta1 <span style="color:#f92672">=</span> M_PI <span style="color:#f92672">-</span> <span style="color:#a6e22e">atan</span>(p2y<span style="color:#f92672">/</span>p2x) <span style="color:#f92672">-</span> <span style="color:#a6e22e">atan</span>( A2<span style="color:#f92672">*</span><span style="color:#a6e22e">sin</span>(theta2) <span style="color:#f92672">/</span> (A1 <span style="color:#f92672">+</span> A2<span style="color:#f92672">*</span><span style="color:#a6e22e">cos</span>(theta2)) );
+</span></span><span style="display:flex;"><span>    sol_1[<span style="color:#ae81ff">0</span>] <span style="color:#f92672">=</span> <span style="color:#a6e22e">RAD_TO_DEG</span>(theta1);
+</span></span><span style="display:flex;"><span>    sol_1[<span style="color:#ae81ff">1</span>] <span style="color:#f92672">=</span> <span style="color:#a6e22e">RAD_TO_DEG</span>(theta2);
+</span></span><span style="display:flex;"><span>    sol_1[<span style="color:#ae81ff">2</span>] <span style="color:#f92672">=</span> psi <span style="color:#f92672">-</span> sol_1[<span style="color:#ae81ff">0</span>] <span style="color:#f92672">-</span> sol_1[<span style="color:#ae81ff">1</span>];
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// find 2nd solution
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    theta2 <span style="color:#f92672">=</span> <span style="color:#f92672">-</span>theta2;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (p2x <span style="color:#f92672">&gt;=</span> <span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span>        theta1 <span style="color:#f92672">=</span> <span style="color:#a6e22e">atan</span>(p2y<span style="color:#f92672">/</span>p2x) <span style="color:#f92672">-</span> <span style="color:#a6e22e">atan</span>( A2<span style="color:#f92672">*</span><span style="color:#a6e22e">sin</span>(theta2) <span style="color:#f92672">/</span> (A1 <span style="color:#f92672">+</span> A2<span style="color:#f92672">*</span><span style="color:#a6e22e">cos</span>(theta2)) );
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">else</span>
+</span></span><span style="display:flex;"><span>        theta1 <span style="color:#f92672">=</span> M_PI <span style="color:#f92672">-</span> <span style="color:#a6e22e">atan</span>(p2y<span style="color:#f92672">/</span>p2x) <span style="color:#f92672">-</span> <span style="color:#a6e22e">atan</span>( A2<span style="color:#f92672">*</span><span style="color:#a6e22e">sin</span>(theta2) <span style="color:#f92672">/</span> (A1 <span style="color:#f92672">+</span> A2<span style="color:#f92672">*</span><span style="color:#a6e22e">cos</span>(theta2)) );
+</span></span><span style="display:flex;"><span>    sol_2[<span style="color:#ae81ff">0</span>] <span style="color:#f92672">=</span> <span style="color:#a6e22e">RAD_TO_DEG</span>(theta1);
+</span></span><span style="display:flex;"><span>    sol_2[<span style="color:#ae81ff">1</span>] <span style="color:#f92672">=</span> <span style="color:#a6e22e">RAD_TO_DEG</span>(theta2);
+</span></span><span style="display:flex;"><span>    sol_2[<span style="color:#ae81ff">2</span>] <span style="color:#f92672">=</span> psi <span style="color:#f92672">-</span> sol_2[<span style="color:#ae81ff">0</span>] <span style="color:#f92672">-</span> sol_2[<span style="color:#ae81ff">1</span>];
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> true;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">convert_angles</span>(<span style="color:#66d9ef">double</span> sol[<span style="color:#ae81ff">3</span>]){
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">//TODO might need to do some stuff about looping angles, like % 360 etc
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">// convert theoretical/irl angles into servo angles
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    sol[<span style="color:#ae81ff">0</span>] <span style="color:#f92672">=</span> <span style="color:#ae81ff">90</span> <span style="color:#f92672">+</span> (EQB1 <span style="color:#f92672">-</span> sol[<span style="color:#ae81ff">0</span>]);
+</span></span><span style="display:flex;"><span>    sol[<span style="color:#ae81ff">1</span>] <span style="color:#f92672">=</span> <span style="color:#ae81ff">90</span> <span style="color:#f92672">+</span> (sol[<span style="color:#ae81ff">1</span>] <span style="color:#f92672">-</span> EQB2);
+</span></span><span style="display:flex;"><span>    sol[<span style="color:#ae81ff">2</span>] <span style="color:#f92672">=</span> <span style="color:#ae81ff">90</span> <span style="color:#f92672">+</span> (EQB3 <span style="color:#f92672">-</span> sol[<span style="color:#ae81ff">2</span>]);
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">bool</span> <span style="color:#a6e22e">choose_sol</span>(<span style="color:#66d9ef">double</span> final_sol[<span style="color:#ae81ff">3</span>], <span style="color:#66d9ef">double</span> sol_1[<span style="color:#ae81ff">3</span>], <span style="color:#66d9ef">double</span> sol_2[<span style="color:#ae81ff">3</span>]){
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">double</span> score_1 <span style="color:#f92672">=</span> NAN;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">double</span> score_2 <span style="color:#f92672">=</span> NAN;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// TODO is there a better way to write this?
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">// check if angles are in servo&#39;s range
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">if</span> (sol_1[<span style="color:#ae81ff">0</span>] <span style="color:#f92672">&lt;=</span> SERVO_RANGE <span style="color:#f92672">&amp;&amp;</span> sol_1[<span style="color:#ae81ff">0</span>] <span style="color:#f92672">&gt;=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>     <span style="color:#f92672">&amp;&amp;</span> sol_1[<span style="color:#ae81ff">1</span>] <span style="color:#f92672">&lt;=</span> SERVO_RANGE <span style="color:#f92672">&amp;&amp;</span> sol_1[<span style="color:#ae81ff">1</span>] <span style="color:#f92672">&gt;=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>     <span style="color:#f92672">&amp;&amp;</span> sol_1[<span style="color:#ae81ff">2</span>] <span style="color:#f92672">&lt;=</span> SERVO_RANGE <span style="color:#f92672">&amp;&amp;</span> sol_1[<span style="color:#ae81ff">2</span>] <span style="color:#f92672">&gt;=</span> <span style="color:#ae81ff">0</span>){
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// calculate score for sol_1
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        score_1 <span style="color:#f92672">=</span> <span style="color:#a6e22e">pow</span>(cur_angles[<span style="color:#ae81ff">1</span>] <span style="color:#f92672">-</span> sol_1[<span style="color:#ae81ff">0</span>],<span style="color:#ae81ff">2</span>) <span style="color:#f92672">+</span> <span style="color:#a6e22e">pow</span>(cur_angles[<span style="color:#ae81ff">2</span>] <span style="color:#f92672">-</span> sol_1[<span style="color:#ae81ff">1</span>],<span style="color:#ae81ff">2</span>) <span style="color:#f92672">+</span> <span style="color:#a6e22e">pow</span>(cur_angles[<span style="color:#ae81ff">3</span>] <span style="color:#f92672">-</span> sol_1[<span style="color:#ae81ff">2</span>],<span style="color:#ae81ff">2</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (sol_2[<span style="color:#ae81ff">0</span>] <span style="color:#f92672">&lt;=</span> SERVO_RANGE <span style="color:#f92672">&amp;&amp;</span> sol_2[<span style="color:#ae81ff">0</span>] <span style="color:#f92672">&gt;=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>     <span style="color:#f92672">&amp;&amp;</span> sol_2[<span style="color:#ae81ff">1</span>] <span style="color:#f92672">&lt;=</span> SERVO_RANGE <span style="color:#f92672">&amp;&amp;</span> sol_2[<span style="color:#ae81ff">1</span>] <span style="color:#f92672">&gt;=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>     <span style="color:#f92672">&amp;&amp;</span> sol_2[<span style="color:#ae81ff">2</span>] <span style="color:#f92672">&lt;=</span> SERVO_RANGE <span style="color:#f92672">&amp;&amp;</span> sol_2[<span style="color:#ae81ff">2</span>] <span style="color:#f92672">&gt;=</span> <span style="color:#ae81ff">0</span>){
+</span></span><span style="display:flex;"><span>        score_2 <span style="color:#f92672">=</span> <span style="color:#a6e22e">pow</span>(cur_angles[<span style="color:#ae81ff">1</span>] <span style="color:#f92672">-</span> sol_2[<span style="color:#ae81ff">0</span>],<span style="color:#ae81ff">2</span>) <span style="color:#f92672">+</span> <span style="color:#a6e22e">pow</span>(cur_angles[<span style="color:#ae81ff">2</span>] <span style="color:#f92672">-</span> sol_2[<span style="color:#ae81ff">1</span>],<span style="color:#ae81ff">2</span>) <span style="color:#f92672">+</span> <span style="color:#a6e22e">pow</span>(cur_angles[<span style="color:#ae81ff">3</span>] <span style="color:#f92672">-</span> sol_2[<span style="color:#ae81ff">2</span>],<span style="color:#ae81ff">2</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">isnan</span>(score_1) <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">isnan</span>(score_2)){
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> false;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">isnan</span>(score_1))
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">memcpy</span>(final_sol,sol_2,<span style="color:#66d9ef">sizeof</span>(<span style="color:#66d9ef">double</span>)<span style="color:#f92672">*</span><span style="color:#ae81ff">3</span>); <span style="color:#75715e">// must use sol_2
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span>(<span style="color:#a6e22e">isnan</span>(score_2))
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">memcpy</span>(final_sol,sol_1,<span style="color:#66d9ef">sizeof</span>(<span style="color:#66d9ef">double</span>)<span style="color:#f92672">*</span><span style="color:#ae81ff">3</span>); <span style="color:#75715e">// must use sol_1
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> (score_1 <span style="color:#f92672">&gt;</span> score_2)
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">memcpy</span>(final_sol,sol_2,<span style="color:#66d9ef">sizeof</span>(<span style="color:#66d9ef">double</span>)<span style="color:#f92672">*</span><span style="color:#ae81ff">3</span>); <span style="color:#75715e">// sol_2 less change
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> (score_1 <span style="color:#f92672">&lt;=</span> score_2)
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">memcpy</span>(final_sol,sol_1,<span style="color:#66d9ef">sizeof</span>(<span style="color:#66d9ef">double</span>)<span style="color:#f92672">*</span><span style="color:#ae81ff">3</span>); <span style="color:#75715e">// sol_1 less change or equal amount of change
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> true;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div>
+</details></p>
+</p>
+<blockquote>
+<p>When the second joint is in (-,+), the formula for theta1 is slightly different. The math when second joint is in (+,-) is the same tho. Not too sure on (-,-).</p>
+</blockquote>
+<p>One of the problems I faced is that there had to be a third argument psi (the orientation of the gripper) in order to solve the IK, and not just x,y. I wanted the GUI to just control the x,y coordinates and dont worry about the psi value, so I dealt with this by just trying a bunch of psi values for each x,y:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-C" data-lang="C"><span style="display:flex;"><span>                <span style="color:#66d9ef">bool</span> is_successful <span style="color:#f92672">=</span> false;
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">double</span> psi<span style="color:#f92672">=-</span><span style="color:#ae81ff">180</span>; psi <span style="color:#f92672">&lt;=</span> <span style="color:#ae81ff">180</span>; psi <span style="color:#f92672">+=</span> <span style="color:#ae81ff">15</span>) {
+</span></span><span style="display:flex;"><span>                    coords[<span style="color:#ae81ff">2</span>] <span style="color:#f92672">=</span> psi;
+</span></span><span style="display:flex;"><span>                    <span style="color:#66d9ef">double</span> sol_1[<span style="color:#ae81ff">3</span>] <span style="color:#f92672">=</span> {<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">0</span>};
+</span></span><span style="display:flex;"><span>                    <span style="color:#66d9ef">double</span> sol_2[<span style="color:#ae81ff">3</span>] <span style="color:#f92672">=</span> {<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">0</span>};
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span><span style="color:#a6e22e">ik_solve</span>(coords,sol_1,sol_2))
+</span></span><span style="display:flex;"><span>                        <span style="color:#66d9ef">continue</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#a6e22e">convert_angles</span>(sol_1);
+</span></span><span style="display:flex;"><span>                    <span style="color:#a6e22e">convert_angles</span>(sol_2);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#66d9ef">double</span> final_sol[<span style="color:#ae81ff">3</span>] <span style="color:#f92672">=</span> {<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">0</span>};
+</span></span><span style="display:flex;"><span>                    <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span><span style="color:#a6e22e">choose_sol</span>(final_sol,sol_1,sol_2))
+</span></span><span style="display:flex;"><span>                        <span style="color:#66d9ef">continue</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#a6e22e">memcpy</span>(<span style="color:#f92672">&amp;</span>target_angles[<span style="color:#ae81ff">1</span>],final_sol,<span style="color:#66d9ef">sizeof</span>(<span style="color:#66d9ef">double</span>)<span style="color:#f92672">*</span><span style="color:#ae81ff">3</span>);
+</span></span><span style="display:flex;"><span>                    <span style="color:#a6e22e">update_servos</span>(target_angles);
+</span></span><span style="display:flex;"><span>                    is_successful <span style="color:#f92672">=</span> true;
+</span></span><span style="display:flex;"><span>                    <span style="color:#66d9ef">break</span>;
+</span></span><span style="display:flex;"><span>                }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// there&#39;s probably better ways to deal with this
+</span></span></span></code></pre></div><h3 id="forward-kinematics">Forward Kinematics<a hidden class="anchor" aria-hidden="true" href="#forward-kinematics">#</a></h3>
+<p>Compared to inverse kinematics, planar forward kinematics is simpler, and is just some trigonometry:
+<figure class="align-center ">
+    <img loading="lazy" src="/robot_arm/forward_kinematics.jpg#center"
+         alt="forward kinematics math"/> <figcaption>
+            <p>forward kinematics math</p>
+        </figcaption>
+</figure>
+</p>
+<p>I wrote some code to help check if solutions from my inverse kinematics code was correct:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python3" data-lang="python3"><span style="display:flex;"><span><span style="color:#f92672">import</span> math
+</span></span><span style="display:flex;"><span>                            
+</span></span><span style="display:flex;"><span>cos <span style="color:#f92672">=</span> <span style="color:#66d9ef">lambda</span> degrees: math<span style="color:#f92672">.</span>cos(math<span style="color:#f92672">.</span>radians(degrees)) 
+</span></span><span style="display:flex;"><span>sin <span style="color:#f92672">=</span> <span style="color:#66d9ef">lambda</span> degrees: math<span style="color:#f92672">.</span>sin(math<span style="color:#f92672">.</span>radians(degrees)) 
+</span></span><span style="display:flex;"><span>                                                         
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># link lengths (cm)</span>
+</span></span><span style="display:flex;"><span>a1 <span style="color:#f92672">=</span> <span style="color:#ae81ff">10.5</span>    
+</span></span><span style="display:flex;"><span>a2 <span style="color:#f92672">=</span> <span style="color:#ae81ff">12.4</span> 
+</span></span><span style="display:flex;"><span>a3 <span style="color:#f92672">=</span> <span style="color:#ae81ff">18.2</span> 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># theoretical angles (degrees)</span>
+</span></span><span style="display:flex;"><span>theta1 <span style="color:#f92672">=</span> <span style="color:#f92672">...</span>
+</span></span><span style="display:flex;"><span>theta2 <span style="color:#f92672">=</span> <span style="color:#f92672">...</span>
+</span></span><span style="display:flex;"><span>theta3 <span style="color:#f92672">=</span> <span style="color:#f92672">...</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>x <span style="color:#f92672">=</span> a1<span style="color:#f92672">*</span>cos(theta1) <span style="color:#f92672">+</span> a2<span style="color:#f92672">*</span>cos(theta1<span style="color:#f92672">+</span>theta2) <span style="color:#f92672">+</span> a3<span style="color:#f92672">*</span>cos(theta1<span style="color:#f92672">+</span>theta2<span style="color:#f92672">+</span>theta3)
+</span></span><span style="display:flex;"><span>y <span style="color:#f92672">=</span> a1<span style="color:#f92672">*</span>sin(theta1) <span style="color:#f92672">+</span> a2<span style="color:#f92672">*</span>sin(theta1<span style="color:#f92672">+</span>theta2) <span style="color:#f92672">+</span> a3<span style="color:#f92672">*</span>sin(theta1<span style="color:#f92672">+</span>theta2<span style="color:#f92672">+</span>theta3)
+</span></span><span style="display:flex;"><span>psi <span style="color:#f92672">=</span> theta1 <span style="color:#f92672">+</span> theta2 <span style="color:#f92672">+</span> theta3
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">&#34;x: </span><span style="color:#e6db74">{}</span><span style="color:#e6db74">, y: </span><span style="color:#e6db74">{}</span><span style="color:#e6db74">, psi: </span><span style="color:#e6db74">{}</span><span style="color:#e6db74">&#34;</span><span style="color:#f92672">.</span>format(x,y,psi))
+</span></span></code></pre></div><h3 id="exploring-configurations">Exploring configurations<a hidden class="anchor" aria-hidden="true" href="#exploring-configurations">#</a></h3>
+<p>In my project, theoretical / irl angles means the angle from the horizontal.<br>
+Anticlockwise is positive, and clockwise is negative:
+<figure class="align-center ">
+    <img loading="lazy" src="/robot_arm/theoretical_angles.jpg#center"
+         alt="theoretical angles" width="400"/> <figcaption>
+            <p>theoretical angles</p>
+        </figcaption>
+</figure>
+</p>
+<p>This follows the IK math.</p>
+<p>Actual servo angles are the angles written to the servos. So depending on how you screw in the arm links to the servo horns, different servo angles correspond to different theoretical angles. I call these different configurations.</p>
+<p>Through my own measurements (using a protractor and a pen, not the most accurate), I found that the MG996R servo can move from angles 0 - 178. When the servo angle is 90 degrees, I like to say that the servo is in equilibrium position.</p>
+<figure class="align-center ">
+    <img loading="lazy" src="/robot_arm/diff_configs.jpg#center"
+         alt="different configurations for one servo/joint"/> <figcaption>
+            <p>different configurations for one servo/joint</p>
+        </figcaption>
+</figure>
+
+<p>So depending on different configurations for all 3 joints, the reachable workspace is different.</p>
+<p>I used forward kinematics and wrote some code to visualise the reachable workspace of different configurations, to help me choose which configuration to use:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python3" data-lang="python3"><span style="display:flex;"><span><span style="color:#f92672">import</span> matplotlib.pyplot <span style="color:#66d9ef">as</span> plt
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> matplotlib.patches <span style="color:#f92672">import</span> Arc
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> math
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>cos <span style="color:#f92672">=</span> <span style="color:#66d9ef">lambda</span> degrees: math<span style="color:#f92672">.</span>cos(math<span style="color:#f92672">.</span>radians(degrees)) 
+</span></span><span style="display:flex;"><span>sin <span style="color:#f92672">=</span> <span style="color:#66d9ef">lambda</span> degrees: math<span style="color:#f92672">.</span>sin(math<span style="color:#f92672">.</span>radians(degrees)) 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># link lengths (cm)</span>
+</span></span><span style="display:flex;"><span>a1 <span style="color:#f92672">=</span> <span style="color:#ae81ff">10.5</span>
+</span></span><span style="display:flex;"><span>a2 <span style="color:#f92672">=</span> <span style="color:#ae81ff">12.4</span> 
+</span></span><span style="display:flex;"><span>a3 <span style="color:#f92672">=</span> <span style="color:#ae81ff">18.2</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>fig, ax <span style="color:#f92672">=</span> plt<span style="color:#f92672">.</span>subplots()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># eqb1 means the theoretical angle of first joint, when first servo is in equilibrium position</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">draw</span>(eqb1,eqb2,eqb3):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> theta1 <span style="color:#f92672">in</span> range(eqb1<span style="color:#f92672">-</span><span style="color:#ae81ff">90</span>,eqb1<span style="color:#f92672">+</span><span style="color:#ae81ff">90</span><span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>):
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> theta2 <span style="color:#f92672">in</span> range(eqb2<span style="color:#f92672">-</span><span style="color:#ae81ff">90</span>,eqb2<span style="color:#f92672">+</span><span style="color:#ae81ff">90</span><span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>):
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># coordinates of joint 2</span>
+</span></span><span style="display:flex;"><span>            p2x <span style="color:#f92672">=</span> a1<span style="color:#f92672">*</span>cos(theta1) <span style="color:#f92672">+</span> a2<span style="color:#f92672">*</span>cos(theta1<span style="color:#f92672">+</span>theta2)
+</span></span><span style="display:flex;"><span>            p2y <span style="color:#f92672">=</span> a1<span style="color:#f92672">*</span>sin(theta1) <span style="color:#f92672">+</span> a2<span style="color:#f92672">*</span>sin(theta1<span style="color:#f92672">+</span>theta2)
+</span></span><span style="display:flex;"><span>            
+</span></span><span style="display:flex;"><span>            arc <span style="color:#f92672">=</span> Arc(xy<span style="color:#f92672">=</span>(p2x,p2y),width<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span><span style="color:#f92672">*</span>a3,height<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span><span style="color:#f92672">*</span>a3,
+</span></span><span style="display:flex;"><span>                      angle<span style="color:#f92672">=</span>theta1<span style="color:#f92672">+</span>theta2,theta1<span style="color:#f92672">=</span>eqb3<span style="color:#f92672">-</span><span style="color:#ae81ff">90</span>,theta2<span style="color:#f92672">=</span>eqb3<span style="color:#f92672">+</span><span style="color:#ae81ff">90</span>,
+</span></span><span style="display:flex;"><span>                      edgecolor<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;blue&#34;</span>,lw<span style="color:#f92672">=</span><span style="color:#ae81ff">0.5</span>)
+</span></span><span style="display:flex;"><span>            ax<span style="color:#f92672">.</span>add_patch(arc)
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">#plt.plot(p2x,p2y,&#34;ro&#34;)</span>
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>            print(<span style="color:#e6db74">&#34;theta1: </span><span style="color:#e6db74">{}</span><span style="color:#e6db74">, theta2: </span><span style="color:#e6db74">{}</span><span style="color:#e6db74">&#34;</span><span style="color:#f92672">.</span>format(theta1,theta2))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>draw(<span style="color:#f92672">...</span>,<span style="color:#f92672">...</span>,<span style="color:#f92672">...</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>full_radius <span style="color:#f92672">=</span> a1<span style="color:#f92672">+</span>a2<span style="color:#f92672">+</span>a3
+</span></span><span style="display:flex;"><span>ax<span style="color:#f92672">.</span>set_aspect(<span style="color:#e6db74">&#39;equal&#39;</span>)
+</span></span><span style="display:flex;"><span>ax<span style="color:#f92672">.</span>set_xlim(<span style="color:#f92672">-</span><span style="color:#ae81ff">50</span>, <span style="color:#ae81ff">50</span>)
+</span></span><span style="display:flex;"><span>ax<span style="color:#f92672">.</span>set_ylim(<span style="color:#f92672">-</span><span style="color:#ae81ff">50</span>, <span style="color:#ae81ff">50</span>)
+</span></span><span style="display:flex;"><span>ax<span style="color:#f92672">.</span>axhline(<span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span>ax<span style="color:#f92672">.</span>axvline(<span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>show()
+</span></span></code></pre></div><p>Some examples:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">(0,0,0)</th>
+<th style="text-align:center">(45,0,0)</th>
+<th style="text-align:center">(45,-60,-60)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><img loading="lazy" src="/robot_arm/0,0,0.png" alt=""  />
+</td>
+<td style="text-align:center"><img loading="lazy" src="/robot_arm/45,0,0.png" alt=""  />
+</td>
+<td style="text-align:center"><img loading="lazy" src="/robot_arm/45,-60,-60.png" alt=""  />
+</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>(45,0,0), means that for servo1, it is at eqb position when theoretical angle = 45. For servo 2 and 3, they are at eqb position when theoretical angle = 0</p>
+</blockquote>
+<p>The coordinate (0,0) is at servo 1&rsquo;s servo horn.</p>
+<p>Some configs might look good, but might result in collisions with the table or arm itself (physical limitations).</p>
+<p>Currently the config being used is (45,0,0).</p>
+<h3 id="gui-and-server">GUI and Server<a hidden class="anchor" aria-hidden="true" href="#gui-and-server">#</a></h3>
+<figure class="align-center ">
+    <img loading="lazy" src="/robot_arm/gui.png#center"
+         alt="GUI"/> <figcaption>
+            <p>GUI</p>
+        </figcaption>
+</figure>
+
+<p>I used the reachable workspace visualisation and put in on a html canvas.  <br>
+Everytime you click on the canvas, the coordinate will be sent through POST to the server.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span>    <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">resp</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> <span style="color:#a6e22e">fetch</span>(<span style="color:#e6db74">&#34;http://&#34;</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">ip</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;:5000/move&#34;</span>, {
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">method</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;POST&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">body</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">JSON</span>.<span style="color:#a6e22e">stringify</span>({<span style="color:#a6e22e">x</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">x</span>, <span style="color:#a6e22e">y</span> <span style="color:#f92672">:</span><span style="color:#a6e22e">y</span>}),
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">headers</span><span style="color:#f92672">:</span> {<span style="color:#e6db74">&#34;Content-type&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;application/json; charset=UTF-8&#34;</span>}
+</span></span><span style="display:flex;"><span>    });
+</span></span></code></pre></div><p>The red dot on the canvas represents where the end effector is currently (sometimes it works, sometimes it doesn&rsquo;t).</p>
+<p>Once the server gets the POST request, it will send a command to the ESP through serial/UART:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python3" data-lang="python3"><span style="display:flex;"><span><span style="color:#a6e22e">@app.route</span>(<span style="color:#e6db74">&#34;/move&#34;</span>,methods<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#34;POST&#34;</span>])
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">move</span>():
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span>        msg <span style="color:#f92672">=</span> str(request<span style="color:#f92672">.</span>json[<span style="color:#e6db74">&#34;x&#34;</span>]) <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;,&#34;</span> <span style="color:#f92672">+</span> str(request<span style="color:#f92672">.</span>json[<span style="color:#e6db74">&#34;y&#34;</span>]) <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        ser<span style="color:#f92672">.</span>read_until(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;choice:&#34;</span>)
+</span></span><span style="display:flex;"><span>        ser<span style="color:#f92672">.</span>write(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;0</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>        ser<span style="color:#f92672">.</span>read_until(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;x,y:&#34;</span>)
+</span></span><span style="display:flex;"><span>        ser<span style="color:#f92672">.</span>write(msg<span style="color:#f92672">.</span>encode())
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        ser<span style="color:#f92672">.</span>read_until(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;success: &#34;</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span>(ser<span style="color:#f92672">.</span>read(<span style="color:#ae81ff">1</span>) <span style="color:#f92672">==</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;1&#34;</span>):
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> {<span style="color:#e6db74">&#34;success&#34;</span>: <span style="color:#66d9ef">True</span>},<span style="color:#ae81ff">200</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> {<span style="color:#e6db74">&#34;success&#34;</span>:<span style="color:#66d9ef">False</span>},<span style="color:#ae81ff">200</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">except</span> <span style="color:#a6e22e">Exception</span> <span style="color:#66d9ef">as</span> e:
+</span></span><span style="display:flex;"><span>        app<span style="color:#f92672">.</span>logger<span style="color:#f92672">.</span>warning(<span style="color:#e6db74">&#34;ESP not connected&#34;</span>)
+</span></span><span style="display:flex;"><span>        print(e)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> {<span style="color:#e6db74">&#34;success&#34;</span>:<span style="color:#66d9ef">False</span>},<span style="color:#ae81ff">200</span>
+</span></span></code></pre></div><p>This is a good time to mention that the ESP32 is actually running a menu service (like pwn challs):</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-C" data-lang="C"><span style="display:flex;"><span>    <span style="color:#66d9ef">while</span> (true){
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// 1: move 2: control gripper 3: rotate base
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#66d9ef">char</span> choice_str[<span style="color:#ae81ff">10</span>] <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#34;</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">uart_print</span>(<span style="color:#e6db74">&#34;choice:</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">uart_fgets</span>(choice_str,<span style="color:#ae81ff">10</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">int</span> choice <span style="color:#f92672">=</span> <span style="color:#a6e22e">atoi</span>(choice_str);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        ...
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">switch</span> (choice) {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">case</span> <span style="color:#ae81ff">0</span><span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#75715e">// move end effector
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>                ...
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">case</span> <span style="color:#ae81ff">1</span><span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#75715e">// control gripper
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>                ...
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">case</span> <span style="color:#ae81ff">2</span><span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#75715e">// rotate base
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>                ...
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">default</span><span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#a6e22e">uart_print</span>(<span style="color:#e6db74">&#34;no such choice</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>);
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">break</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span></code></pre></div><p>The server actually first sends the command code, then sends the info necessary to execute the commands.</p>
+<p>So after the server sends the coordinates to the ESP32, the ESP32 will execute the command by telling the servo driver to move the servos. The ESP32 will also tell the server whether the command was successful or not. The process for controlling gripper and rotating base is similar.</p>
+<p>When you first power on everything, the ESP32 will of course boot up much quicker than the pi, so by the time server.py runs on the pi, and the pi starts listening on the serial connection, it won&rsquo;t catch the initial string &ldquo;choice:&rdquo; from the esp32. So to solve this, just:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python3" data-lang="python3"><span style="display:flex;"><span>ser<span style="color:#f92672">.</span>write(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;5</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>ser<span style="color:#f92672">.</span>read_until(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;no such choice</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>) <span style="color:#75715e"># load b&#34;choice:&#34; in the RX pyserial buf</span>
+</span></span></code></pre></div><p>send an invalid command and get a response at the start of server.py. That way the &ldquo;choice:&rdquo; strings sent afterwards are actually listened and stored in the serial buffer.</p>
+<h3 id="object-recognition">Object recognition<a hidden class="anchor" aria-hidden="true" href="#object-recognition">#</a></h3>
+<p>To just open the camera connected to the pi:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python3" data-lang="python3"><span style="display:flex;"><span><span style="color:#f92672">import</span> cv2 <span style="color:#66d9ef">as</span> cv
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> numpy <span style="color:#66d9ef">as</span> np
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> picamera2 <span style="color:#f92672">import</span> Picamera2
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>cam <span style="color:#f92672">=</span> Picamera2()
+</span></span><span style="display:flex;"><span>cam<span style="color:#f92672">.</span>start()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">while</span> <span style="color:#66d9ef">True</span>:
+</span></span><span style="display:flex;"><span>    frame <span style="color:#f92672">=</span> cam<span style="color:#f92672">.</span>capture_array()
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> frame <span style="color:#f92672">is</span> <span style="color:#66d9ef">None</span>:
+</span></span><span style="display:flex;"><span>        print(<span style="color:#e6db74">&#34;no frame captured&#34;</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">break</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    frame <span style="color:#f92672">=</span> cv<span style="color:#f92672">.</span>cvtColor(frame,cv<span style="color:#f92672">.</span>COLOR_RGB2BGR)
+</span></span><span style="display:flex;"><span>         
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># constantly show new frame</span>
+</span></span><span style="display:flex;"><span>    cv<span style="color:#f92672">.</span>imshow(<span style="color:#e6db74">&#34;frame&#34;</span>,frame)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> cv<span style="color:#f92672">.</span>waitKey(<span style="color:#ae81ff">1</span>) <span style="color:#f92672">==</span> ord(<span style="color:#e6db74">&#34;q&#34;</span>):
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">break</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>cv<span style="color:#f92672">.</span>destroyAllWindows()
+</span></span></code></pre></div><p>I also worked on the object recognition part a bit, on my laptop:</p>
+<video width="750" class="video-shortcode" preload="" controls>
+    <source src="/robot_arm/objrec_demo.mp4" type="">
+    There should have been a video here but your browser does not seem
+            to support it.
+</video>
+
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python3" data-lang="python3"><span style="display:flex;"><span><span style="color:#f92672">import</span> cv2 <span style="color:#66d9ef">as</span> cv
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> numpy <span style="color:#66d9ef">as</span> np
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>cap <span style="color:#f92672">=</span> cv<span style="color:#f92672">.</span>VideoCapture(<span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> cap<span style="color:#f92672">.</span>isOpened():
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">&#34;Cannot open camera&#34;</span>)
+</span></span><span style="display:flex;"><span>    exit()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">while</span> <span style="color:#66d9ef">True</span>:
+</span></span><span style="display:flex;"><span>    ret, frame <span style="color:#f92672">=</span> cap<span style="color:#f92672">.</span>read()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> ret:
+</span></span><span style="display:flex;"><span>        print(<span style="color:#e6db74">&#34;no frame read&#34;</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">break</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    img <span style="color:#f92672">=</span> cv<span style="color:#f92672">.</span>cvtColor(frame,cv<span style="color:#f92672">.</span>COLOR_BGR2HSV)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># mask colors</span>
+</span></span><span style="display:flex;"><span>    mask1 <span style="color:#f92672">=</span> cv<span style="color:#f92672">.</span>inRange(img,(<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">100</span>,<span style="color:#ae81ff">50</span>),(<span style="color:#ae81ff">5</span>,<span style="color:#ae81ff">255</span>,<span style="color:#ae81ff">255</span>))
+</span></span><span style="display:flex;"><span>    mask2 <span style="color:#f92672">=</span> cv<span style="color:#f92672">.</span>inRange(img,(<span style="color:#ae81ff">175</span>,<span style="color:#ae81ff">100</span>,<span style="color:#ae81ff">50</span>),(<span style="color:#ae81ff">179</span>,<span style="color:#ae81ff">255</span>,<span style="color:#ae81ff">255</span>))
+</span></span><span style="display:flex;"><span>    img <span style="color:#f92672">=</span> cv<span style="color:#f92672">.</span>bitwise_or(mask1,mask2)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># opening</span>
+</span></span><span style="display:flex;"><span>    kernel <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>ones((<span style="color:#ae81ff">3</span>,<span style="color:#ae81ff">3</span>),np<span style="color:#f92672">.</span>uint8)
+</span></span><span style="display:flex;"><span>    img <span style="color:#f92672">=</span> cv<span style="color:#f92672">.</span>morphologyEx(img,cv<span style="color:#f92672">.</span>MORPH_OPEN,kernel)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># find and draw contours</span>
+</span></span><span style="display:flex;"><span>    contours,hierarchy <span style="color:#f92672">=</span> cv<span style="color:#f92672">.</span>findContours(img,cv<span style="color:#f92672">.</span>RETR_TREE,cv<span style="color:#f92672">.</span>CHAIN_APPROX_SIMPLE)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> contours:
+</span></span><span style="display:flex;"><span>        c <span style="color:#f92672">=</span> max(contours,key<span style="color:#f92672">=</span>cv<span style="color:#f92672">.</span>contourArea)
+</span></span><span style="display:flex;"><span>        peri <span style="color:#f92672">=</span> cv<span style="color:#f92672">.</span>arcLength(c,<span style="color:#66d9ef">True</span>)
+</span></span><span style="display:flex;"><span>        approx <span style="color:#f92672">=</span> cv<span style="color:#f92672">.</span>approxPolyDP(c,<span style="color:#ae81ff">0.015</span><span style="color:#f92672">*</span>peri,<span style="color:#66d9ef">True</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> len(approx) <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">9</span>:
+</span></span><span style="display:flex;"><span>            cv<span style="color:#f92672">.</span>drawContours(frame,[approx],<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>,(<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">150</span>),<span style="color:#ae81ff">3</span>) <span style="color:#75715e"># frame still in bgr form</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># constantly show new frame</span>
+</span></span><span style="display:flex;"><span>    cv<span style="color:#f92672">.</span>imshow(<span style="color:#e6db74">&#34;frame&#34;</span>,frame)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> cv<span style="color:#f92672">.</span>waitKey(<span style="color:#ae81ff">1</span>) <span style="color:#f92672">==</span> ord(<span style="color:#e6db74">&#34;q&#34;</span>):
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">break</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>cap<span style="color:#f92672">.</span>release()
+</span></span><span style="display:flex;"><span>cv<span style="color:#f92672">.</span>destroyAllWindows()
+</span></span></code></pre></div><p>I just did some masking, <a href="https://docs.opencv.org/4.x/d9/d61/tutorial_py_morphological_ops.html">morphological operations</a>, <a href="https://docs.opencv.org/4.x/d4/d73/tutorial_py_contours_begin.html">countours finding</a>, and <a href="https://pyimagesearch.com/2021/10/06/opencv-contour-approximation/">contour approximation</a>.</p>
+<p>It doesn&rsquo;t work too well when a bunch of blocks are near each other since it&rsquo;ll form a big contour, but I think this can be solved by moving the arm over the blocks and having a top down view.</p>
+<p>For this to work on the fisheye camera, I&rsquo;ll prob have to put a filter since the frames from the fisheye camera are more reddish, and then adjust the values for the mask.</p>
+<p>To finish this project, I&rsquo;ll have to implement a way to find distance (maybe focal length method), then do some math to estimate where the block is on the plane, and slowly move towards the block. I also have to implement the object recognition for blue and green blocks, as well as recognising the boxes to put the blocks into. Also, I have to write the logic for scanning/choosing which blocks to go for first.</p>
+<h2 id="conclusion">Conclusion<a hidden class="anchor" aria-hidden="true" href="#conclusion">#</a></h2>
+<p>I learned a huge ton from this project, and had a lot of fun. Don&rsquo;t hesitate to tell me what improvements I can make to it. Maybe I&rsquo;ll finish it some day.</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2025 <a href="https://zhirenliew.github.io">zhiren</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>
